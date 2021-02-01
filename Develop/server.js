@@ -2,6 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const { dirname } = require('path')
 const path = require('path')
+const notes = require('./db/db.json')
 
 const app = express()
 const PORT = process.env.PORT || 3040
@@ -12,7 +13,7 @@ app.use(express.static('db'))
 fs.readFile("db/db.json", "utf8", (err, data) => {
 
       if (err) throw err;
-//sets a constant of notes to the parsed json file so that we can now send it to the history sections. 
+      //sets a constant of notes to the parsed json file so that we can now send it to the history sections. 
       const notes = JSON.parse(data);
 
       app.get('/index.html', (req, res) => {
@@ -24,10 +25,10 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
       })
 
       app.get('/api/notes', (req, res) => {
-            res.sendFile(path.join(__dirname, './db', 'db.json'))
+            res.json(notes)
       })
 
-      
+
 
 })
 
