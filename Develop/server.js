@@ -1,35 +1,58 @@
 const express = require('express')
 const fs = require('fs')
-const { dirname } = require('path')
 const path = require('path')
-const notes = require('./db/db.json')
 
 const app = express()
 const PORT = process.env.PORT || 3040
+const mainDir = path.join(__dirname, "/public")
 //brings in public folder files, such ass css and js so formatting works and client side functions work.  
 app.use(express.static('public'));
-app.use(express.static('db'))
-//uses node's fs module to read the json file that we have named db, which is where we are storing notes. 
-fs.readFile("db/db.json", "utf8", (err, data) => {
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
-      if (err) throw err;
-      //sets a constant of notes to the parsed json file so that we can now send it to the history sections. 
-      const notes = JSON.parse(data);
+app.get("/notes", (req, res) => {
+      res.sendFile(path.join(mainDir, "notes.html"))
+})
 
-      app.get('/index.html', (req, res) => {
-            res.sendFile('./public/index.html', { root: __dirname })
+app.get("/api/notes", (req, res) => {
+      res.sendFile(path.join(__dirname, "/db/db.json"))
+})
+
+app.get("/api/notes:id", (req, res) => {
+      let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"))
+      res.json(savedNotes[Number(req.params.id)])
+})
+
+app.get("*", (req, res) => {
+      res.sendFile([ath.join(mainDir, "index.html")])
+})
+
+app.post("/api/notes", (req, res) => {
+      let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"))
+      newNote = req.body
+      let uniqueID = (savedNotes.length).toString()
+      newNote.id = uniqueID
+      savedNotes.push(newNote)
+
+      fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes))
+      res.json(savedNotes)
+})
+
+app.delete("/api/notes/:id", (req, res) => {
+      let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"))
+      let noteID = req.params.id
+      let newID = 0
+      savedNotes = savedNotes.filter(currNote => {
+            return currNote.id != noteID
       })
 
-      app.get('/notes.html', (req, res) => {
-            res.sendFile('./public/notes.html', { root: __dirname })
-      })
+      for (currNote of savedNotes) {
+            currNote.id = newID.toString()
+            newID++
+      }
 
-      app.get('/api/notes', (req, res) => {
-            res.json(notes)
-      })
-
-
-
+      fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes))
+      res.json(savedNotes)
 })
 
 app.listen(PORT);
