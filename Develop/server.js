@@ -24,11 +24,11 @@ app.get("/api/notes:id", (req, res) => {
 })
 
 app.get("*", (req, res) => {
-      res.sendFile([ath.join(mainDir, "index.html")])
+      res.sendFile([path.join(mainDir, "index.html")])
 })
 
 app.get("/", (req, res) => {
-      res.sendFile([ath.join(mainDir, "index.html")])
+      res.sendFile([path.join(mainDir, "index.html")])
 })
 
 app.post("/api/notes", (req, res) => {
