@@ -27,6 +27,10 @@ app.get("*", (req, res) => {
       res.sendFile([ath.join(mainDir, "index.html")])
 })
 
+app.get("/", (req, res) => {
+      res.sendFile([ath.join(mainDir, "index.html")])
+})
+
 app.post("/api/notes", (req, res) => {
       let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"))
       newNote = req.body
