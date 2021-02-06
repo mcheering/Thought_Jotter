@@ -16,5 +16,5 @@ For users that need to keep track of a lot of information, it's easy to forget o
 [Thought Jotter](https://thought-jotter.herokuapp.com)
 
 ## GIF of the APP
-![recording of app](/Develop/assets/recording.gif)
+![recording of app](/Develop/public/assets/recording.gif)
 
