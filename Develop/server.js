@@ -4,7 +4,7 @@ const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3040
-const mainDir = path.join(__dirname, "./public")
+const mainDir = path.join(__dirname, "/public")
 //brings in public folder files, such ass css and js so formatting works and client side functions work.  
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }))
@@ -15,7 +15,7 @@ app.get("/notes", (req, res) => {
 })
 
 app.get("/api/notes", (req, res) => {
-      res.sendFile(path.join(__dirname, "./db/db.json"))
+      res.sendFile(path.join(__dirname, "/db/db.json"))
 })
 
 app.get("/api/notes:id", (req, res) => {
@@ -23,12 +23,8 @@ app.get("/api/notes:id", (req, res) => {
       res.json(savedNotes[Number(req.params.id)])
 })
 
-app.get("*", (req, res) => {
-      res.sendFile([path.join(mainDir, "index.html")])
-})
-
 app.get("/", (req, res) => {
-      res.sendFile([path.join(mainDir, "index.html")])
+      res.sendFile(path.join(mainDir, "index.html"))
 })
 
 app.post("/api/notes", (req, res) => {
