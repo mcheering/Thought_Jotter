@@ -23,7 +23,7 @@ app.get("/api/notes:id", (req, res) => {
       res.json(savedNotes[Number(req.params.id)])
 })
 
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
       res.sendFile(path.join(mainDir, "index.html"))
 })
 
